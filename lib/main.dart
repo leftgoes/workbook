@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'training.dart';
+
 void main() {
-  runApp(MyApp());
+  runApp(WorkbookApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class WorkbookApp extends StatelessWidget {
+  const WorkbookApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -47,8 +49,6 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyAppState extends ChangeNotifier {}
-
 class MyHomePage extends StatefulWidget {
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -56,7 +56,12 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int currentPageIndex = 0;
-  List<Widget> pages = [HomePage(), Placeholder(), Placeholder()];
+  List<Widget> pages = [
+    HomePage(),
+    Placeholder(),
+    Placeholder(),
+    Placeholder()
+  ];
   List<int> showTrainingFABPageIndices = [0, 1];
 
   @override
@@ -71,8 +76,10 @@ class _MyHomePageState extends State<MyHomePage> {
         duration: const Duration(milliseconds: 100),
         child: FloatingActionButton(
           onPressed: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => StartTrainingPage()));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const StartTrainingPage()));
           },
           splashColor: theme.splashColor,
           hoverColor: theme.hoverColor,
@@ -91,6 +98,8 @@ class _MyHomePageState extends State<MyHomePage> {
             NavigationDestination(icon: Icon(Icons.home), label: 'Home'),
             NavigationDestination(
                 icon: Icon(Icons.list_alt_rounded), label: 'Training Plan'),
+            NavigationDestination(
+                icon: Icon(Icons.straighten_rounded), label: 'Body'),
             NavigationDestination(
               icon: Icon(Icons.account_circle_rounded),
               label: 'Profile',
@@ -118,135 +127,10 @@ class HomePage extends StatelessWidget {
           child: Card(
               child: Padding(
             padding: const EdgeInsets.all(50.0),
-            child: Text('You have had 6 workouts this week'),
+            child: Text('You have had 0 workouts this week'),
           )),
         )
       ],
-    );
-  }
-}
-
-class StartTrainingPage extends StatefulWidget {
-  const StartTrainingPage({super.key});
-
-  @override
-  State<StartTrainingPage> createState() => _StartTrainingPageState();
-}
-
-class _StartTrainingPageState extends State<StartTrainingPage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            GestureDetector(
-              onTap: () {
-                setState(() {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const DuringTrainingPage()),
-                  );
-                });
-              },
-              child: TransparentCard(
-                  child: Column(
-                children: [
-                  Text('Start Training',
-                      style: Theme.of(context).textTheme.headlineSmall),
-                  SizedBox(height: 15.0),
-                  Hero(
-                    tag: 'startTrainingFAB',
-                    child: Icon(
-                      Icons.fitness_center_rounded,
-                    ),
-                  ),
-                ],
-              )),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class DuringTrainingPage extends StatefulWidget {
-  const DuringTrainingPage({super.key});
-
-  @override
-  State<DuringTrainingPage> createState() => _DuringTrainingPageState();
-}
-
-class _DuringTrainingPageState extends State<DuringTrainingPage> {
-  bool paused = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(height: 20.0),
-            Text('hello'),
-            Row(
-              mainAxisAlignment: paused
-                  ? MainAxisAlignment.spaceEvenly
-                  : MainAxisAlignment.center,
-              children: [
-                Visibility(
-                    visible: paused,
-                    child: FloatingActionButton(
-                        onPressed: () {
-                          print('go back');
-                        },
-                        child: Icon(Icons.stop_rounded))),
-                FloatingActionButton(
-                    onPressed: () {
-                      setState(() {
-                        paused = !paused;
-                      });
-                    },
-                    child: Icon(paused
-                        ? Icons.play_arrow_rounded
-                        : Icons.pause_rounded))
-              ],
-            )
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class TransparentCard extends StatelessWidget {
-  const TransparentCard({
-    super.key,
-    required this.child,
-    this.elevation = 100.0,
-  });
-
-  final Widget child;
-  final double elevation;
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      elevation: elevation,
-      color: Colors.transparent,
-      surfaceTintColor: Colors.transparent,
-      shape: RoundedRectangleBorder(
-          side: BorderSide(color: Theme.of(context).shadowColor),
-          borderRadius: BorderRadius.circular(25.0)),
-      child: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: child,
-      ),
     );
   }
 }
